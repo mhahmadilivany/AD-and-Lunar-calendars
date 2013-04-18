@@ -1,4 +1,6 @@
 AD-and-Lunar-calendars
 ======================
 
-in this program there are AD and Hijri_Lunar calendars.you can have any year and month of them and even convert them to each other
+in this program there are AD and Hijri_Lunar calendars.you can have any year and month of them and even convert them to each other...
+there are two classes and one functions.class calander is the hijri-lunar calendar and class calander2 is AD calendar.
+and the function convert can convert tow days of this calanders to each other...
