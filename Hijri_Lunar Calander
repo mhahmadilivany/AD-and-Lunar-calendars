@@ -1,0 +1,160 @@
+class calander():           #hijri solar calander
+    def __str__(self,year,month,day):
+        self.year = year
+        self.month = month
+        self.day = day
+        return str(self.day)+"/"+str(self.month)+"/"+str(self.year)
+
+    def leap_year(self,year):
+        self.year = year + 1
+        if self.year % 4 == 0 and self.year % 100 != 0 :
+            return True
+        elif self.year % 100 == 0 :
+            if self.year % 400 == 0 :
+                return False
+            else:
+                return True
+        else:
+          return False
+            
+    def months_days_numbers(self,num_month,year):
+        if num_month <= 6 and num_month >= 1:
+            month_days = 31
+        elif num_month >= 7 and num_month <= 11:
+            month_days = 30
+        elif num_month == 12:
+            if self.leap_year(year):
+                month_days = 30
+            else:
+                month_days = 29
+        else:
+            raise RuntimeError,"month number out of range"
+        return month_days
+    
+    def day_detecting(self,day,month,year):
+                                                    #to access the determined day we will start from a speciffic day
+                                                    #that is clear to us wich day of week it is...
+                                                    #then regarding to that day we will get the first day of the month of
+                                                    #the required day and reach to that day
+        
+        daynames = ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"]
+        if day > calander.months_days_numbers(self,month,year) or day < 1:
+                raise RuntimeError,"day number out of range"
+        if day == 1 and month == 1 and year == 1391:
+            return daynames[3]
+        elif month == 1 and year == 1391 and day != 1:
+            d = dict()
+            d["Tuesday"] = 1
+            d["wednesday"] = 2
+            d["Thursday"] = 3
+            d["Friday"] = 4
+            d["Saturday"] = 5
+            d["Sunday"] = 6
+            d["Monday"] = 0
+            x = day % 7
+            for j in d.keys():
+                if d[j] == x :
+                    return j                       
+        elif year == 1391 and month != 1:    
+            a = "Tuesday"
+            h = 1
+            while h < month :
+                if h >= 7:
+                    b = 2
+                elif h <= 6:
+                    b = 3
+                a = daynames[daynames.index(a) + b]
+                h += 1
+            d = dict()
+            day_list = daynames[daynames.index(a):] + daynames[:daynames.index(a)]
+            d[day_list[0]] = 1
+            d[day_list[1]] = 2
+            d[day_list[2]] = 3
+            d[day_list[3]] = 4
+            d[day_list[4]] = 5
+            d[day_list[5]] = 6
+            d[day_list[6]] = 0
+        elif year != 1391:
+            a = "Tuesday"
+            if year > 1391:
+                z = 1391
+                while z < year:
+                    if calander.leap_year(self,z):
+                        w = 366 % 7
+                    else:
+                        w = 365 % 7
+                    a = daynames[daynames.index(a) + w]
+                    z += 1
+                h = 1
+                while h < month :
+                    if h >= 7:
+                        b = 2
+                    elif h <= 6:
+                        b = 3
+                    a = daynames[daynames.index(a) + b]
+                    h += 1
+                d = dict()
+                day_list = daynames[daynames.index(a):] + daynames[:daynames.index(a)]
+                d[day_list[0]] = 1
+                d[day_list[1]] = 2
+                d[day_list[2]] = 3
+                d[day_list[3]] = 4
+                d[day_list[4]] = 5
+                d[day_list[5]] = 6
+                d[day_list[6]] = 0
+            else:
+                z = 1391
+                while z > year:
+                    if calander.leap_year(self,z-1):
+                        w = 366 % 7
+                    else:
+                        w = 365 % 7
+                    a = daynames[daynames.index(a) - w]
+                    z -= 1
+                h = 1
+                while h < month :
+                    if h >= 7:
+                        b = 2
+                    elif h <= 6:
+                        b = 3
+                    a = daynames[daynames.index(a) + b]
+                    h += 1
+                d = dict()
+                day_list = daynames[daynames.index(a):] + daynames[:daynames.index(a)]
+                d[day_list[0]] = 1
+                d[day_list[1]] = 2
+                d[day_list[2]] = 3
+                d[day_list[3]] = 4
+                d[day_list[4]] = 5
+                d[day_list[5]] = 6
+                d[day_list[6]] = 0 
+        q = day % 7
+        for i in d.keys():
+            if q == d[i]:
+                return i 
+            
+    def month_printing(self,month,year):
+        months_list = ["Farvardin","Ordibehesht","Khordad","Tir","Mordad","Shahrivar","Mehr","Aban","Azar","Dey","Bahman","Esfand"]
+        print months_list[month-1],year
+        i = 1
+        counter = 0
+        while i <= calander.months_days_numbers(self,month,year):
+            if counter < 7:
+                print m.day_detecting(i,month,year),"(%d)"%i,"\t",
+                i+=1
+                counter += 1
+            else:
+                print "\n",m.day_detecting(i,month,year),"(%d)"%i,"\t",
+                counter = 1
+                i+=1
+
+    def year_printing(self,year):
+        for i in range(1,13):
+            print calander.month_printing(self,i,year),"\n"
+        
+"""m = calander()                   #this is for using just this class
+                                    #but because of the convert function is just commented...:D
+year = input("insert the year : ")
+month = input("insert the month : ")
+m.month_printing(month,year)"""
+
