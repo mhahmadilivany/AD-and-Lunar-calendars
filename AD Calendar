@@ -1,0 +1,154 @@
+class calander2:               #A.D calander
+      def __str__(self,year,month,day):
+        self.year = year
+        self.month = month
+        self.day = day
+        return str(self.day)+"/"+str(self.month)+"/"+str(self.year)
+      
+      def leap_year(self,year):
+            self.year = year
+            if self.year % 4 == 0 and self.year % 100 != 0:
+                  return True
+            elif self.year % 100 == 0:
+                  if self.year % 400 == 0:
+                      return False
+                  else:
+                        return True
+            else:
+                  return False
+            
+      def months_days_numbers(self,num_month,year):
+            list_31_num = [1,3,5,7,8,10,12]
+            list_30_num = [4,6,9,11]
+            if num_month in list_31_num:
+                  month_days = 31
+            elif num_month in list_30_num:
+                  month_days = 30
+            elif num_month == 2:
+                  if self.leap_year(year):
+                        month_days = 29
+                  else:
+                        month_days = 28
+            else:
+                  raise RuntimeError,"month number out of range"
+            return month_days
+      
+      def day_detecting(self,day,month,year):
+                                                #to access the determined day we will start from a speciffic day
+                                                #that is clear to us wich day of week it is...
+                                                #then regarding to that day we will get the first day of the month of
+                                                #the required day and reach to that day
+            
+            daynames = ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday","Friday"]
+            if day > calander2.months_days_numbers(self,month,year) or day < 1:
+                  raise RuntimeError,"day number out of range"
+            if day == 1 and month == 1 and year == 2013:
+                  return daynames[3]
+            elif month == 1 and year == 2013 and day != 1:
+                  d = dict()
+                  d["Tuesday"] = 1
+                  d["wednesday"] = 2
+                  d["Thursday"] = 3
+                  d["Friday"] = 4
+                  d["Saturday"] = 5
+                  d["Sunday"] = 6
+                  d["Monday"] = 0
+                  x = day % 7
+                  for j in d.keys():
+                        if d[j] == x :
+                              return j
+            elif year == 2013 and month != 1:    
+                  a = "Tuesday"
+                  h = 1
+                  while h < month :
+                        b = calander2.months_days_numbers(self,h,year)%7    
+                        a = daynames[daynames.index(a) + b]
+                        h += 1
+                  d = dict()
+                  day_list = daynames[daynames.index(a):] + daynames[:daynames.index(a)]
+                  d[day_list[0]] = 1
+                  d[day_list[1]] = 2
+                  d[day_list[2]] = 3
+                  d[day_list[3]] = 4
+                  d[day_list[4]] = 5
+                  d[day_list[5]] = 6
+                  d[day_list[6]] = 0
+            elif year != 2013:
+                  a = "Tuesday"
+                  if year > 2013:
+                        z = 2013
+                        while z < year:
+                              if calander2.leap_year(self,z):
+                                    w = 366 % 7
+                              else:
+                                    w = 365 % 7
+                              a = daynames[daynames.index(a) + w]
+                              z += 1
+                        h = 1
+                        while h < month :
+                              b = calander2.months_days_numbers(self,h,year)%7
+                              a = daynames[daynames.index(a) + b]
+                              h += 1
+                        d = dict()
+                        day_list = daynames[daynames.index(a):] + daynames[:daynames.index(a)]
+                        d[day_list[0]] = 1
+                        d[day_list[1]] = 2
+                        d[day_list[2]] = 3
+                        d[day_list[3]] = 4
+                        d[day_list[4]] = 5
+                        d[day_list[5]] = 6
+                        d[day_list[6]] = 0
+                  else:
+                        z = 2013
+                        while z > year:
+                              if calander2.leap_year(self,z-1):
+                                    w = 366 % 7
+                              else:
+                                    w = 365 % 7
+                              a = daynames[daynames.index(a) - w]
+                              z -= 1
+                        h = 1
+                        while h < month :
+                              b = calander2.months_days_numbers(self,h,year)%7
+                              a = daynames[daynames.index(a) + b]
+                              h += 1
+                        d = dict()
+                        day_list = daynames[daynames.index(a):] + daynames[:daynames.index(a)]
+                        d[day_list[0]] = 1
+                        d[day_list[1]] = 2
+                        d[day_list[2]] = 3
+                        d[day_list[3]] = 4
+                        d[day_list[4]] = 5
+                        d[day_list[5]] = 6
+                        d[day_list[6]] = 0
+            q = day % 7
+            for i in d.keys():
+                  if q == d[i]:
+                        return i
+
+      def month_printing(self,month,year):
+            months_list = ["January","February","March","April","May","June","July","August","September","October","November","December"]
+            print months_list[month-1],year
+            i = 1
+            counter = 0
+            while i <= calander2.months_days_numbers(self,month,year):
+                  if counter < 7:
+                        print m.day_detecting(i,month,year),"(%d)"%i,"\t",
+                        counter += 1
+                        i+=1
+                  else:
+                        print "\n",m.day_detecting(i,month,year),"(%d)"%i,"\t",
+                        counter = 1
+                        i+=1
+                        
+      def year_printing(self,year):
+            for i in range(1,13):
+                  print m.month_printing(i,year),"\n"
+
+
+"""m = calander2()
+                                    #this is for using just this class
+                                    #but because of the convert function is just commented...:D
+year = input("insert the year : ")
+month = input("insert the month : ")
+m.month_printing(month,year)"""
