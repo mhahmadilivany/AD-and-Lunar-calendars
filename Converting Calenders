@@ -1,0 +1,191 @@
+from calander import*
+from calander2 import*
+lunar = calander()
+ad = calander2()
+def convert(day,month,year,calander):         #This function converts the Lunar and A.D calendars to each other
+                                              #the parameter calander should be input A.D or Lunar that shows the tupe of caleder you inserted
+      day_counter = 0
+      if calander == "Lunar" :
+            if day > lunar.months_days_numbers(month,year) or day < 1:
+                  raise RuntimeError,"day number out of range"
+            y = year
+            if year == 1392 :                   #day_counter counts how many days it is far from 1392/1/1
+                                                #and we will access to the determined day getting far from 1/1/2013
+                                                #by adding some numbers to day_counter
+                  day_counter += day
+                  month -= 1
+                  while month > 0 :
+                        day_counter += lunar.months_days_numbers(month,year)
+                        month -= 1
+            elif year > 1392 :
+                  while year > 1392 :
+                        if lunar.leap_year(year):
+                              day_counter += 366
+                        else:
+                              day_counter += 365
+                        year -= 1
+                  day_counter += day
+                  month -= 1
+                  while month > 0 :
+                        day_counter += lunar.months_days_numbers(month,year)
+                        month -= 1
+            elif year < 1392 :
+                  while year < 1392 :
+                        if lunar.leap_year(year):
+                              day_counter += 366
+                        else:
+                              day_counter += 365
+                        year += 1
+                  day_counter -= day
+                  month -= 1
+                  while month > 0 :
+                        day_counter -= lunar.months_days_numbers(month,year)
+                        month -= 1
+            if y > 1392 :                       
+                  y = 2013
+                  m = 1
+                  day_counter += 79
+                  while day_counter >= 30:
+                        if day_counter >= 365:
+                              if ad.leap_year(y):
+                                    y += 1
+                                    day_counter -= 366
+                              else:
+                                    y += 1
+                                    day_counter -= 365
+                        else:
+                              day_counter -= ad.months_days_numbers(m,y)
+                              m += 1
+                  d = day_counter       
+            elif y == 1392 :
+                  m = 0
+                  y = 2013
+                  if day_counter > 286 :
+                        y += 1
+                  day_counter += 79
+                  day_counter %= 365
+                  while day_counter >= 30:
+                        m += 1
+                        day_counter -= ad.months_days_numbers(m,y)
+                  m += 1
+                  d = day_counter
+            elif y < 1392 :
+                  y = 2012
+                  m = 12
+                  day_counter -= 79
+                  if day_counter < 0:
+                        y = 2013
+                        m = 0
+                        while day_counter < 0:
+                              m += 1
+                              day_counter += ad.months_days_numbers(m,y)
+                        d = ad.months_days_numbers(m,y) - day_counter
+                  else:
+                        while day_counter >= 30:
+                              if day_counter >= 365:
+                                    if ad.leap_year(y):
+                                          y -= 1
+                                          day_counter -= 366
+                                    else:
+                                          y -= 1
+                                          day_counter -= 365
+                              else:
+                                    day_counter -= ad.months_days_numbers(m,y)
+                                    m -= 1
+                        d = ad.months_days_numbers(m,y) - day_counter   
+            print ad.__str__(y,m,d)
+            print ad.day_detecting(d,m,y)
+
+      elif calander == "A.D":
+            if day > lunar.months_days_numbers(month,year) or day < 1:
+                  raise RuntimeError,"day number out of range"
+            y = year
+            if year == 2013 :                   #day_counter counts how many days it is far from 2013/1/1
+                                                #and we will access to the determined day getting far from 1/1/1392
+                                                #by adding some numbers to day_counter
+                  
+                  day_counter += day
+                  month -= 1
+                  while month > 0 :
+                        day_counter += ad.months_days_numbers(month,year)
+                        month -= 1
+            elif year > 2013 :
+                  while year > 2013 :
+                        if ad.leap_year(year):
+                              day_counter += 366
+                        else:
+                              day_counter += 365
+                        year -= 1
+                  day_counter += day
+                  month -= 1
+                  while month > 0 :
+                        day_counter += ad.months_days_numbers(month,year)
+                        month -= 1
+            elif year < 2013 :
+                  while year <= 2013 :
+                        if ad.leap_year(year):
+                              day_counter += 366
+                        else:
+                              day_counter += 365
+                        year += 1
+                  day_counter -= day
+                  month -= 1
+                  while month > 0 :
+                        day_counter -= ad.months_days_numbers(month,year)
+                        month -= 1
+            if y > 2013 :
+                  y = 1392
+                  m = 1
+                  day_counter -= 79
+                  while day_counter >= 30:
+                        if day_counter >= 365:
+                              if lunar.leap_year(y):
+                                    y += 1
+                                    day_counter -= 366
+                              else:
+                                    y += 1
+                                    day_counter -= 365
+                        else:
+                              day_counter -= lunar.months_days_numbers(m,y)
+                              m += 1
+                  d = day_counter
+            elif y == 2013:
+                  y = 1391
+                  if day_counter > 80 :
+                        y += 1
+                        m = 0
+                        day_counter -= 79
+                        while day_counter >= 30:
+                              m += 1
+                              day_counter -= lunar.months_days_numbers(m,y)
+                        m += 1
+                        d = day_counter
+                  elif day_counter <= 80:
+                        m = 10
+                        d = 12
+                        day_counter += 11
+                        while day_counter >= 30:
+                              m += 1
+                              day_counter -= lunar.months_days_numbers(m,y)
+                        d = day_counter
+            elif y < 2013:
+                  y = 1391
+                  m = 12
+                  day_counter += 80
+                  while day_counter >= 30:
+                        if day_counter >= 365:
+                              if lunar.leap_year(y):
+                                    y -= 1
+                                    day_counter -= 366
+                              else:
+                                    y -= 1
+                                    day_counter -= 365
+                        else:
+                              day_counter -= lunar.months_days_numbers(m,y)
+                              m -= 1
+                  d = lunar.months_days_numbers(m,y) - day_counter
+            if y < 0:
+                  raise RuntimeError,"The Lunar year is below 0"
+            print lunar.__str__(y,m,d)
+            print lunar.day_detecting(d,m,y)
+            
