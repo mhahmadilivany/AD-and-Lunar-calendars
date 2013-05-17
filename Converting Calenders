@@ -122,7 +122,7 @@ def convert(day,month,year,calander):         #This function converts the Lunar 
                         day_counter += ad.months_days_numbers(month,year)
                         month -= 1
             elif year < 2013 :
-                  while year <= 2013 :
+                  while year < 2013 :
                         if ad.leap_year(year):
                               day_counter += 366
                         else:
